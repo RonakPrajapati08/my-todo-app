@@ -1,25 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+// import logo from "./logo.svg";
+import "./App.css";
+// import Header from "./Component/Header";
+// import Todolist from "./Todolist";
+import ToDoList1 from "./ToDoList1";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {/* <Todolist /> */}
+      <ToDoList1 />
+      {/* <Header /> */}
     </div>
   );
 }
 
 export default App;
+// import React from "react";
+// // import ThemeProvider from "./UseContext/ThemeContext";
+// // import Todolist from "./Todolist";
+// import CrudOparation from "./UseContext/CrudOparation";
+// // import LoginForm from "./UseContext/LoginForm";
+
+// function App() {
+//   return (
+//     // <ThemeProvider>
+//     //   <Todolist />
+//     // </ThemeProvider>
+//     <CrudOparation />
+//   );
+// }
+
+// export default App;
