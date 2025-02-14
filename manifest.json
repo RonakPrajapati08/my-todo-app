@@ -1,6 +1,6 @@
 {
-  "short_name": "To-Do APP",
-  "name": "To-Do",
+  "short_name": "To-Do",
+  "name": "To-Do App",
   "icons": [
     {
       "src": "./to-do-list1.png",
@@ -16,5 +16,35 @@
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "background_color": "#fbf7fc",
+  "id": "R-todo",
+  "description": "The ToDo PWA App is a lightweight, fast, and fully responsive Progressive Web App (PWA) designed to help you stay organized and boost productivity. With an intuitive interface, offline support, and seamless synchronization across devices, this app ensures you never miss a task again.",
+  "dir": "auto",
+  "scope": "/",
+  "lang": "en",
+  "orientation": "portrait",
+  "display_override": [
+    "standalone",
+    "browser",
+    "window-controls-overlay",
+    "fullscreen"
+  ],
+  "categories": [
+    "books"
+  ],
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  },
+  "screenshots": [
+    {
+      "src": "./screenshot1.png",
+      "sizes": "1080x1920",
+      "type": "image/png"
+    },
+    {
+      "src": "./screenshot2.png",
+      "sizes": "1080x1920",
+      "type": "image/png"
+    }
+  ]
 }
