@@ -609,12 +609,14 @@ function ToDoList1() {
     const itemToEdit = todolist[index];
     setTitle(itemToEdit.title);
     setToname(itemToEdit.todo);
+    setEndTime(itemToEdit.endTime)
     setEditingIndex(index);
   };
 
   const handleCancel = () => {
     setTitle("");
     setToname("");
+    setEndTime("");
     setEditingIndex(null);
   };
 
@@ -866,10 +868,13 @@ function ToDoListItems({
           onClick={() => handleEdit(indexNumber)}
           type="button"
           className="btn btn-light btn-sm"
+          disabled={completed}
           style={{
             border: "none",
-            color: "#A39FDA",
+            color: completed ? "#d1d1d1" : "#A39FDA",
             fontSize: "18px",
+            cursor: completed ? "not-allowed" : "pointer",
+            opacity: completed ? 0.5 : 1,
           }}
         >
           <i className="fas fa-edit"></i>
