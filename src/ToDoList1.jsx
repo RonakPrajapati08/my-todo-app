@@ -501,8 +501,11 @@ function ToDoList1() {
   const [todolist, setTodolist] = useState([]);
   const [title, setTitle] = useState("");
   const [toname, setToname] = useState("");
+  const [endTime, setEndTime] = useState("");
   const [editingIndex, setEditingIndex] = useState(null);
   const [showToast, setShowToast] = useState(false); // For toast visibility
+  const [announcement, setAnnouncement] = useState(null);
+  const [showPopup, setShowPopup] = useState(false);
 
   // Load data from localStorage when the component mounts
   useEffect(() => {
@@ -517,11 +520,49 @@ function ToDoList1() {
     localStorage.setItem("todolist", JSON.stringify(todolist)); // Save current to-do list
   }, [todolist]);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const now = new Date().getTime();
+      todolist.forEach((todo) => {
+        const todoEndTime = new Date(todo.endTime).getTime();
+        if (!todo.completed && todoEndTime <= now) {
+          startAnnouncement(todo.title, todo.todo);
+          setShowPopup(true);
+        }
+      });
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [todolist]);
+
+  const startAnnouncement = (title, todo) => {
+    if (announcement) return;
+
+    const speech = new SpeechSynthesisUtterance("Your to-do time is over.");
+    speech.lang = "en-US";
+    speech.rate = 1;
+    speech.pitch = 1;
+
+    setAnnouncement(speech);
+    setShowPopup(true); // Ensure the popup is displayed
+
+    window.speechSynthesis.speak(speech);
+  };
+
+  const stopAnnouncement = () => {
+    window.speechSynthesis.cancel(); // Stop speech immediately
+    setAnnouncement(null);
+    setShowPopup(false); // Close popup
+  };
+
   const saveToDoList = (event) => {
     event.preventDefault();
 
-    if (title && toname) {
+    if (title && toname && endTime) {
       const timestamp = new Date().toLocaleString(); // Capture current date and time
+      if (new Date(endTime) <= new Date()) {
+        alert("End time must be in the future.");
+        return;
+      }
 
       if (editingIndex !== null) {
         // Update the item if editing
@@ -529,6 +570,7 @@ function ToDoList1() {
         updatedList[editingIndex] = {
           title,
           todo: toname,
+          endTime,
           completed: false,
           timestamp,
         };
@@ -537,11 +579,15 @@ function ToDoList1() {
       } else {
         // Add a new to-do
         if (
-          !todolist.some((item) => item.title === title && item.todo === toname)
+          !todolist.some(
+            (item) =>
+              item.title === title &&
+              (item.todo === toname) & (item.endTime === endTime)
+          )
         ) {
           const finalToDoList = [
             ...todolist,
-            { title, todo: toname, completed: false, timestamp },
+            { title, todo: toname, endTime, completed: false, timestamp },
           ];
           setTodolist(finalToDoList);
           setShowToast(true); // Show success toast
@@ -552,6 +598,7 @@ function ToDoList1() {
       }
       setTitle("");
       setToname("");
+      setEndTime("");
       event.target.reset();
     } else {
       alert("Please enter both Title and To-Do item.");
@@ -608,6 +655,21 @@ function ToDoList1() {
           <div className="toast-body t-bod">To-Do added successfully!</div>
         </div>
       )}
+      
+      {/* Todo Announcement notification */}
+      {showPopup && (
+        <div className="toast show  m-3 roni-toast1" style={{ zIndex: 1050 }}>
+          <div className="toast-header bg-success text-white">
+            <strong className="me-auto fs-6 lead t-hed">Announcement</strong>
+            <button
+              type="button"
+              className="btn-close"
+              onClick={stopAnnouncement}
+            ></button>
+          </div>
+          <div className="toast-body t-bod">Your to-do time is over!</div>
+        </div>
+      )}
 
       <div className="card mx-auto shadow" style={{ maxWidth: "600px" }}>
         <div
@@ -658,6 +720,23 @@ function ToDoList1() {
                 required
                 value={toname}
                 onChange={(e) => setToname(e.target.value)}
+                style={{
+                  width: "100%",
+                  padding: "10px",
+                  borderRadius: "5px",
+                  border: "1px solid #ccc",
+                  fontSize: "16px",
+                }}
+              />
+            </div>
+            <div style={{ marginBottom: "15px" }}>
+              <input
+                type="datetime-local"
+                className="form-control"
+                required
+                placeholder="End Time"
+                value={endTime}
+                onChange={(e) => setEndTime(e.target.value)}
                 style={{
                   width: "100%",
                   padding: "10px",
@@ -756,10 +835,10 @@ function ToDoListItems({
               className="fw-bold text-primary mb-0"
               style={{
                 fontSize: "17px",
-                whiteSpace: "normal", // Allow wrapping
-                wordWrap: "break-word", // Break long words
-                maxWidth: "200px", // Set a max width to constrain the title
-                overflow: "hidden", // Optional: Add ellipsis for extremely long titles
+                whiteSpace: "normal",
+                wordWrap: "break-word",
+                maxWidth: "200px",
+                overflow: "hidden",
               }}
             >
               {title.toUpperCase()}
@@ -772,10 +851,10 @@ function ToDoListItems({
             className="text-muted mb-0"
             style={{
               fontSize: "14px",
-              whiteSpace: "normal", // Allow wrapping
-              wordWrap: "break-word", // Break long words
-              maxWidth: "200px", // Set a max width to constrain the title
-              overflow: "hidden", // Optional: Add ellipsis for extremely long titles
+              whiteSpace: "normal",
+              wordWrap: "break-word",
+              maxWidth: "200px",
+              overflow: "hidden",
             }}
           >
             {value}
@@ -1175,7 +1254,6 @@ function ToDoListItems({
 //     </div>
 //   );
 // }
-
 
 // import React, { useState, useEffect } from "react";
 // import "./todo.css";

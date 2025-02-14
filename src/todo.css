@@ -47,6 +47,10 @@ body {
   }
 }
 
+.toast {
+  animation: slideIn 0.4s ease-out;
+}
+
 @keyframes slideIn {
   from {
     transform: translateY(-20px);
@@ -59,7 +63,11 @@ body {
   position: fixed;
   top: 0;
   right: 0;
-  
+}
+.roni-toast1 {
+  position: fixed;
+  top: 0;
+  right: 0;
 }
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
@@ -67,7 +75,14 @@ body {
     position: fixed;
     top: 0;
     right: 0;
-    --bs-toast-max-width: 200px !important;
+    --bs-toast-max-width: 250px !important;
+  }
+  .roni-toast1 {
+    position: fixed;
+    top: 0;
+    right: 0;
+    --bs-toast-max-width: 230px;
+
   }
   .t-hed{
     font-size: 16px;
