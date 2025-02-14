@@ -20,7 +20,7 @@
   "id": "R-todo",
   "description": "The ToDo PWA App is a lightweight, fast, and fully responsive Progressive Web App (PWA) designed to help you stay organized and boost productivity. With an intuitive interface, offline support, and seamless synchronization across devices, this app ensures you never miss a task again.",
   "dir": "auto",
-  "scope": "https://ronakprajapati08.github.io/my-todo-app/",
+  "scope": ".",
   "lang": "en",
   "orientation": "portrait",
   "display_override": [
